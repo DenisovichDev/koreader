@@ -1,3 +1,5 @@
 /.koreader-version
 *.log
 *.zip
+.github/
+.vscode/
