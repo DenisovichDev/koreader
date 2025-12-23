@@ -15,7 +15,7 @@ if [ -z "$(ls -A "$KINDLE_MOUNT" 2>/dev/null)" ]; then
   sudo mount -t drvfs $KINDLE_DRIVE $KINDLE_MOUNT
 fi
 
-# Sanity check
+# Sanity checks
 if [ ! -d "$KINDLE_MOUNT" ]; then
   echo "ERROR: Kindle mount point not found."
   exit 1
@@ -27,8 +27,12 @@ if [ ! -d "$TARGET" ]; then
 fi
 
 echo "Syncing files..."
-rsync -av \
-  --delete \
+
+rsync -rv --delete \
+  --no-perms \
+  --no-owner \
+  --no-group \
+  --omit-dir-times \
   --exclude=".git" \
   --exclude=".github" \
   --exclude="build/" \
@@ -39,6 +43,7 @@ rsync -av \
   --exclude="*.log" \
   ./ \
   "$TARGET"
+
 
 sync
 echo "Deploy complete."
